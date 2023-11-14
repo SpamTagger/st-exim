@@ -1,0 +1,17 @@
+Package: mc-exim
+Version: __INSTVER__
+Maintainer: John Mertz <support@mailcleaner.net>
+Architecture: amd64
+Priority: standard
+Essential: yes
+Installed-Size: __INSTSIZE__
+Conflicts: exim, exim-tls, exim4-daemon-light, exim4-daemon-heavy, exim4-daemon-custom, exim4, exim4-base, exim4-config, ssmtp
+Replaces: exim, exim-tls, exim4-daemon-light, exim4-daemon-heavy, exim4-daemon-custom, exim4, exim4-base, exim4-config, ssmtp
+Provides: mail-transport-agent, mc-exim, exim4, exim, exim4-daemon-light, exim4-daemon-heavy, exim4-daemon-custom, exim4-base, exim4-config
+Breaks: exim4-daemon-custom, exim4-daemon-heavy, exim4-daemon-light
+Depends: adduser, cron | cron-daemon | anacron | systemd-sysv, netbase, libgcrypt20-dev, libgdbm-dev, libgnutls-dane0, libgnutls-openssl27, libgnutls28-dev, libgsasl-dev, libldap-dev, libmail-srs-perl, libmariadb-dev, libopendmarc-dev, libpam0g-dev, libpcre2-dev, libperl-dev, libspf2-dev, libsqlite3-dev
+Recommends: bsd-mailx | mailx, psmisc
+Suggests: exim4-doc-html | exim4-doc-info, eximon4, file, gnutls-bin | openssl, mail-reader, spf-tools-perl, swaks
+Description: This package includes the specific Exim package used by
+ MailCleaner. MailCleaner depends on several features that are not provided
+ in any of the upstream Debian packages.
