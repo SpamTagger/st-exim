@@ -43,5 +43,5 @@ WORKDIR /
 RUN sed -i 's/__INSTVER__/'$EXIM_VERSION'/' /mc-exim/DEBIAN/control
 RUN sed -i 's/__INSTSIZE__/'$(du -sk /mc-exim | cut -f1)'/' /mc-exim/DEBIAN/control
 WORKDIR /
-RUN dpkg-deb -b -Z xz /mc-exim /mc-exim-${EXIM_VERSION}_amd64.deb
+RUN dpkg-deb -b -Z gzip /mc-exim /mc-exim-${EXIM_VERSION}_amd64.deb
 CMD lintian /mc-exim-${EXIM_VERSION}_amd64.deb
