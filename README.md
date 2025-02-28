@@ -1,6 +1,6 @@
 # mc-exim
 
-Compile MailCleaner's build of Exim with Docker/Podman/etc.
+Compile MailCleaner's build of Exim with Docker
 
 # Usage
 
@@ -13,7 +13,7 @@ To build the package, you can use the one-step compose file or build and extract
 Run the `build_and_extract.sh` script with the target version as an option:
 
 ```
-./build_and_extract.sh 4.97
+./build_and_extract.sh 4.98.1
 ```
 
 you can optionally provide a destination directory as the second argument to have the `.deb` exported to a specific directory. By default, `${HOME}/debs/` will be used.
@@ -22,16 +22,14 @@ If successful, the path to the new `.deb` will be printed.
 
 ## Run manually
 
-Note: `docker` will be used below, but note that other equivalent runtimes, such as `podman` which are compatible with the `Dockerfile`/`Containerfile` format can be substituted.
-
 Below, the following option will be used:
 
-* `${EXIM_VERSION}` - The target tag version to be checked out from Git, which will also be used as the output file name. (default: `4.97`)
+* `${EXIM_VERSION}` - The target tag version to be checked out from Git, which will also be used as the output file name. (default: `4.98.1`)
 
 Build compilation container:
 
 ```
-docker build --build-arg EXIM_VERSION=${EXIM_VERSION} -t build/mc-exim -f Containerfile
+docker build --build-arg EXIM_VERSION=${EXIM_VERSION} -t build/mc-exim . 
 ```
 
 Run the container to get build results:
@@ -54,8 +52,14 @@ Clean up the container:
 docker rm CONTAINER_ID
 ```
 
+Clean up the image:
+
+```
+docker image rm IMAGE_ID
+```
+
 # Notes for future releases
 
 MailCleaner specific build options are defined in `DEBIAN/EDITME`. These need to be updated appropriately based on Exim changelogs (for new features, deprecations and renaming of options).
 
-It would be best practice to increment the default version number within `Containerfile` and this document.
+It would be best practice to increment the default version number within `Dockerfile` and this document.

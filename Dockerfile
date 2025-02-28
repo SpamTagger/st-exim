@@ -1,5 +1,6 @@
-FROM debian:bookworm
+FROM debian:trixie
 ARG EXIM_VERSION=${EXIM_VERSION}
+ARG CPUS=${CPUS}
 COPY ./DEBIAN /DEBIAN
 RUN mkdir -p /mc-exim/opt/exim4
 
@@ -10,6 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
     exim4-daemon-heavy \
     git \
     libgcrypt20-dev \
+    libnsl-dev \
     libgdbm-dev \
     libgnutls-dane0 \
     libgnutls-openssl27 \
@@ -35,7 +37,7 @@ RUN ldconfig
 WORKDIR src
 RUN mkdir Local
 RUN cp /DEBIAN/EDITME Local/Makefile
-RUN EXIM_RELEASE_VERSION=${EXIM_VERSION} make -j6
+RUN EXIM_RELEASE_VERSION=${EXIM_VERSION} make -j${CPUS}
 RUN make install
 RUN cp -a /opt/exim4/* /mc-exim/opt/exim4/
 RUN cp -r /DEBIAN /mc-exim/
