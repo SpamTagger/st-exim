@@ -1,4 +1,0 @@
-mc-exim4: elevated-privileges 4755 root/root [opt/exim4/sbin/exim4]
-mc-exim4: package-contains-empty-directory [opt/exim4/lib/exim4/local_scan/]
-mc-exim4: ldconfig-escape usr/sbin/exim4 [opt/exim4/lib/sendmail]
-mc-exim4: debian-changelog-file-is-a-symlink [opt/exim4/share/doc/mc-exim4/changelog.gz]

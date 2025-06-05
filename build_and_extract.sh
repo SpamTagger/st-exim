@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if [ -z $1 ]; then
-	echo "Please provide desired version tag as an argument"
-	exit
+	echo "Version argument not provided. Defaulting to 4.98.2"
+	EXIM_VERSION="4.98.2"
 else
 	EXIM_VERSION=$1
-	echo "Building version $EXIM_VERSION"
 fi
+echo "Building version $EXIM_VERSION"
 
 if [ -z $2 ]; then
 	EXPORT_DIR=${HOME}/debs
@@ -19,32 +19,32 @@ if [ ! -d $EXPORT_DIR ]; then
 fi
 
 CPUS=$(lscpu | grep '^CPU(s):' | awk '{ print $2 }');
-docker build --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/mc-exim .
+docker build --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
 
-docker image inspect build/mc-exim >/dev/null 2>&1
+docker image inspect build/st-exim >/dev/null 2>&1
 RET=$?
 if [ $RET != 0 ]; then
-	echo "Failed to build image with 'docker build --build-arg EXIM_VERSION=$EXIM_VERSION -t build/mc-exim -f Containerfile'. Return code $RET"
+	echo "Failed to build image with 'docker build --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim'. Return code $RET"
 	exit
 else
-	echo "Built docker image: build/mc-exim"
+	echo "Built docker image: build/st-exim"
 fi
 
-CONTAINER=$(docker run -d build/mc-exim)
+CONTAINER=$(docker run -d build/st-exim)
 RET=$?
 if [ $RET != 0 ]; then
-	echo "Failed to run container ($CONTAINER) with 'docker run -d build/mc-exim' Return code $RET"
+	echo "Failed to run container ($CONTAINER) with 'docker run -d build/st-exim' Return code $RET"
 	exit
 fi
 
-docker cp $CONTAINER:/mc-exim-${EXIM_VERSION}_amd64.deb ${EXPORT_DIR}/
+docker cp $CONTAINER:/st-exim-${EXIM_VERSION}_amd64.deb ${EXPORT_DIR}/
 
 echo Cleaning up...
 sleep 5
 docker rm $CONTAINER >/dev/null
-docker image rm build/mc-exim -f >/dev/null
-if [ -f ${EXPORT_DIR}/mc-exim-${EXIM_VERSION}_amd64.deb ]; then
-	echo "Package build and exported to: ${EXPORT_DIR}/mc-exim-${EXIM_VERSION}_amd64.deb"
+docker image rm build/st-exim -f >/dev/null
+if [ -f ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_amd64.deb ]; then
+	echo "Package build and exported to: ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_amd64.deb"
 else
-	echo "Failed to export package mc-exim-${EXIM_VERSION}_amd64.deb to ${EXPORT_DIR}/mc-exim-${EXIM_VERSION}_amd64.deb"
+	echo "Failed to export package st-exim-${EXIM_VERSION}_amd64.deb to ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_amd64.deb"
 fi

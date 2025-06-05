@@ -2,7 +2,7 @@ FROM debian:trixie
 ARG EXIM_VERSION=${EXIM_VERSION}
 ARG CPUS=${CPUS}
 COPY ./DEBIAN /DEBIAN
-RUN mkdir -p /mc-exim/opt/exim4
+RUN mkdir -p /st-exim/opt/exim4
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
@@ -39,11 +39,11 @@ RUN mkdir Local
 RUN cp /DEBIAN/EDITME Local/Makefile
 RUN EXIM_RELEASE_VERSION=${EXIM_VERSION} make -j${CPUS}
 RUN make install
-RUN cp -a /opt/exim4/* /mc-exim/opt/exim4/
-RUN cp -r /DEBIAN /mc-exim/
+RUN cp -a /opt/exim4/* /st-exim/opt/exim4/
+RUN cp -r /DEBIAN /st-exim/
 WORKDIR /
-RUN sed -i 's/__INSTVER__/'$EXIM_VERSION'/' /mc-exim/DEBIAN/control
-RUN sed -i 's/__INSTSIZE__/'$(du -sk /mc-exim | cut -f1)'/' /mc-exim/DEBIAN/control
+RUN sed -i 's/__INSTVER__/'$EXIM_VERSION'/' /st-exim/DEBIAN/control
+RUN sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control
 WORKDIR /
-RUN dpkg-deb -b -Z gzip /mc-exim /mc-exim-${EXIM_VERSION}_amd64.deb
-CMD lintian /mc-exim-${EXIM_VERSION}_amd64.deb
+RUN dpkg-deb -b -Z gzip /st-exim /st-exim-${EXIM_VERSION}_amd64.deb
+CMD lintian /st-exim-${EXIM_VERSION}_amd64.deb
