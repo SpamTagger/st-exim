@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -z $1 ]; then
-	echo "Version argument not provided. Defaulting to 4.98.2"
-	EXIM_VERSION="4.98.2"
+	EXIM_VERSION="4.99"
+	echo "Version argument not provided. Defaulting to $EXIM_VERSION"
 else
 	EXIM_VERSION=$1
 fi
