@@ -14,18 +14,19 @@ else
 	EXPORT_DIR=$2
 fi
 
+if [ -z $3 ]; then
+	ARCH='amd64'
+else
+	ARCH=$3
+fi
+
 if [ ! -d $EXPORT_DIR ]; then
 	mkdir -p $EXPORT_DIR
 fi
 
-ARCH=$(arch)
-[[ "$ARCH" == "aarch64" ]] && ARCH=arm64
-[[ "$ARCH" == "armv7l" ]] && ARCH=armhf
-[[ "$ARCH" == "x86_64" ]] && ARCH=amd64
-[[ "$ARCH" == "ppc64le" ]] && ARCH=ppc64el
-
 CPUS=$(lscpu | grep '^CPU(s):' | awk '{ print $2 }');
-docker build --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
+echo RUNNING: docker build --platform linux/$ARCH --build-arg DEB_ARCH=$ARCH --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
+docker build --platform linux/$ARCH --build-arg DEB_ARCH=$ARCH --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
 
 docker image inspect build/st-exim >/dev/null 2>&1
 RET=$?

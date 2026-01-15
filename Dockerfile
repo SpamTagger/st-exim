@@ -1,5 +1,6 @@
 FROM debian:stable
 ARG EXIM_VERSION=${EXIM_VERSION}
+ARG DEB_ARCH=${DEB_ARCH}
 ARG CPUS=${CPUS}
 COPY ./DEBIAN /DEBIAN
 RUN mkdir -p /st-exim/opt/exim4
@@ -45,5 +46,5 @@ WORKDIR /
 RUN sed -i 's/__INSTVER__/'$EXIM_VERSION'/' /st-exim/DEBIAN/control
 RUN sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control
 WORKDIR /
-RUN dpkg-deb -b -Z gzip /st-exim /st-exim-${EXIM_VERSION}_amd64.deb
-CMD lintian /st-exim-${EXIM_VERSION}_amd64.deb
+RUN dpkg-deb -b -Z gzip /st-exim /st-exim-${EXIM_VERSION}_${DEB_ARCH}.deb
+CMD lintian /st-exim-${EXIM_VERSION}_${DEB_ARCH}.deb

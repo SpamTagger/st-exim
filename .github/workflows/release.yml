@@ -51,7 +51,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           chmod +x ./build_and_extract.sh
-          ./build_and_extract.sh $VERSION /home/runner/debs
+          ./build_and_extract.sh $VERSION /home/runner/debs ${{ matrix.deb_arch }}
 
       - name: Define package path
         id: pkg
