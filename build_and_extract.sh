@@ -26,29 +26,9 @@ fi
 
 CPUS=$(lscpu | grep '^CPU(s):' | awk '{ print $2 }');
 echo RUNNING: docker build --platform linux/$ARCH --build-arg DEB_ARCH=$ARCH --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
-docker build --platform linux/$ARCH --build-arg DEB_ARCH=$ARCH --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
-
-docker image inspect build/st-exim >/dev/null 2>&1
-RET=$?
-if [ $RET != 0 ]; then
-	echo "Failed to build image with 'docker build --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim'. Return code $RET"
-	exit
-else
-	echo "Built docker image: build/st-exim"
-fi
-
-CONTAINER=$(docker run -d build/st-exim)
-RET=$?
-if [ $RET != 0 ]; then
-	echo "Failed to run container ($CONTAINER) with 'docker run -d build/st-exim' Return code $RET"
-	exit
-fi
-
-docker cp $CONTAINER:/st-exim-${EXIM_VERSION}_${ARCH}.deb ${EXPORT_DIR}/
+docker buildx build --platform linux/$ARCH --build-arg DEB_ARCH=$ARCH --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS --output type=local,dest=${EXPORT_DIR} -t build/st-exim .
 
 echo Cleaning up...
-sleep 5
-docker rm $CONTAINER >/dev/null
 docker image rm build/st-exim -f >/dev/null
 if [ -f ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_${ARCH}.deb ]; then
 	echo "Package build and exported to: ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_${ARCH}.deb"
