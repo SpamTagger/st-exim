@@ -1,11 +1,11 @@
-FROM debian:trixie
+FROM debian:stable
 ARG EXIM_VERSION=${EXIM_VERSION}
 ARG CPUS=${CPUS}
 COPY ./DEBIAN /DEBIAN
 RUN mkdir -p /st-exim/opt/exim4
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
+RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install -qq \
     apt-utils \
     build-essential \
     exim4-daemon-heavy \
