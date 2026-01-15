@@ -18,6 +18,12 @@ if [ ! -d $EXPORT_DIR ]; then
 	mkdir -p $EXPORT_DIR
 fi
 
+ARCH=$(arch)
+[[ "$ARCH" == "aarch64" ]] && ARCH=arm64
+[[ "$ARCH" == "armv7l" ]] && ARCH=armhf
+[[ "$ARCH" == "x86_64" ]] && ARCH=amd64
+[[ "$ARCH" == "ppc64le" ]] && ARCH=ppc64el
+
 CPUS=$(lscpu | grep '^CPU(s):' | awk '{ print $2 }');
 docker build --build-arg EXIM_VERSION=$EXIM_VERSION --build-arg CPUS=$CPUS -t build/st-exim .
 
@@ -37,14 +43,14 @@ if [ $RET != 0 ]; then
 	exit
 fi
 
-docker cp $CONTAINER:/st-exim-${EXIM_VERSION}_amd64.deb ${EXPORT_DIR}/
+docker cp $CONTAINER:/st-exim-${EXIM_VERSION}_${ARCH}.deb ${EXPORT_DIR}/
 
 echo Cleaning up...
 sleep 5
 docker rm $CONTAINER >/dev/null
 docker image rm build/st-exim -f >/dev/null
-if [ -f ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_amd64.deb ]; then
-	echo "Package build and exported to: ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_amd64.deb"
+if [ -f ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_${ARCH}.deb ]; then
+	echo "Package build and exported to: ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_${ARCH}.deb"
 else
-	echo "Failed to export package st-exim-${EXIM_VERSION}_amd64.deb to ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_amd64.deb"
+	echo "Failed to export package st-exim-${EXIM_VERSION}_${ARCH}.deb to ${EXPORT_DIR}/st-exim-${EXIM_VERSION}_${ARCH}.deb"
 fi
