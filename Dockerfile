@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:stable as build
 ARG EXIM_VERSION=${EXIM_VERSION}
 ARG DEB_ARCH=${DEB_ARCH}
 ARG CPUS=${CPUS}
@@ -46,5 +46,8 @@ WORKDIR /
 RUN sed -i 's/__INSTVER__/'$EXIM_VERSION'/' /st-exim/DEBIAN/control
 RUN sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control
 WORKDIR /
+RUN mkdir /tmp/output
 RUN dpkg-deb -b -Z gzip /st-exim /tmp/output/st-exim-${EXIM_VERSION}_${DEB_ARCH}.deb
-CMD lintian /tmp/output/st-exim-${EXIM_VERSION}_${DEB_ARCH}.deb
+RUN lintian /tmp/output/st-exim-${EXIM_VERSION}_${DEB_ARCH}.deb
+FROM scratch as export
+COPY --from=build /tmp/output/st-exim-${EXIM_VERSION}_${DEB_ARCH}.deb /
