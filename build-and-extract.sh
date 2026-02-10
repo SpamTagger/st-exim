@@ -29,6 +29,9 @@ podman run --rm \
   -v "${EXPORT_DIR}:/out${SELINUX}" \
   "localhost/${IMAGE}"
 
+echo Contents of export dir:
+ls "${EXPORT_DIR}"
+
 if [[ -f "${EXPORT_DIR}/st-exim.deb" ]]; then
   echo "✔ Successfully built package"
 else
