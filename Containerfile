@@ -63,4 +63,4 @@ RUN dpkg-deb -b -Z gzip /st-exim /tmp/st-exim.deb && \
 
 RUN ls -al /tmp
 
-CMD cp /tmp/st-exim.deb /out/
+ENTRYPOINT ["/bin/sh", "-e", "-c", "cp /tmp/st-exim.deb /out/"]
