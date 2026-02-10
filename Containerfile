@@ -39,7 +39,7 @@ RUN useradd spamtagger --system --create-home --user-group \
   --home-dir /var/spamtagger \
   --shell /usr/sbin/nologin
 
-RUN git clone https://github.com/exim/exim.git --depth 1
+RUN git clone https://code.exim.org/exim/exim.git --depth 1
 WORKDIR exim
 RUN git fetch --tags && git checkout exim-${EXIM_VERSION}
 

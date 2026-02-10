@@ -13,20 +13,20 @@ To build the package, you can use the one-step compose file or build and extract
 Run the `build_and_extract.sh` script with the target version as an option:
 
 ```
-./build_and_extract.sh 4.99
+./build_and_extract.sh 4.99.1
 ```
 
 you can optionally provide the distribution codename as the second argument and the architecture (amd64, arm64) as the third, and an alternate export destination directory as the forth. By default, it will use:
 
 ```
-./build-and-export.sh 4.99 trixie amd64 ./dist
+./build-and-export.sh 4.99.1 trixie amd64 ./dist
 ```
 
-and the output file will be located at `./dist/st-exim_4.99+trixie_amd64.deb`.
+and the output file will be located at `./dist/st-exim_4.99.1+trixie_amd64.deb`.
 
 # GitHub Actions
 
-A workflow exists to automatically build and upload the .deb packages to GitHub Releases any time that a new version tag (starting with `v`) is pushed. The version number after the `v` will be used as the Exim version to build (ie. The tag `v4.99` will build version `4.99`). TODO: there is not currently an option to create a patched version of the same release (ie. `4.99-1`).
+A workflow exists to automatically build and upload the .deb packages to GitHub Releases any time that a new version tag (starting with `v`) is pushed. The version number after the `v` will be used as the Exim version to build (ie. The tag `v4.99.1` will build version `4.99.1`). TODO: there is not currently an option to create a patched version of the same release (ie. `4.99.1-1`).
 
 # Developer notes for future releases
 

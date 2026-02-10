@@ -2,7 +2,7 @@
 # vim: set ts=2 sw=2 expandtab :
 set -euo pipefail
 
-EXIM_VERSION="${1:-4.99}"
+EXIM_VERSION="${1:-4.99.1}"
 DISTRO="${2:-trixie}"
 ARCH="${3:-amd64}"
 BUILD_DIR="${4:-$(pwd)/build}"
@@ -31,12 +31,7 @@ podman build \
   --output type=local,dest="${BUILD_DIR}" \
   -t "$IMAGE" .
 
-echo Contents of export dir:
-ls "${BUILD_DIR}/tmp"
-
-if [[ -f "${BUILD_DIR}/tmp/st-exim.deb" ]]; then
-  echo "✔ Successfully built package"
-else
+if [[ ! -f "${BUILD_DIR}/tmp/st-exim.deb" ]]; then
   echo "✘ Failed to build package"
   exit 1
 fi
@@ -45,7 +40,7 @@ mv ${BUILD_DIR}/tmp/st-exim.deb ${EXPORT_DIR}/${FINAL_DEB}
 
 cd "${EXPORT_DIR}"
 sha256sum "${FINAL_DEB}" > "${FINAL_DEB}.sha256"
+echo "Package available at ${EXPORT_DIR}/${FINAL_DEB}"
 echo "SHA256 checksum written to ${EXPORT_DIR}/${FINAL_DEB}.sha256"
 
-echo "Package available at ${EXPORT_DIR}/${FINAL_DEB}"
 rm -rf ${BUILD_DIR}
