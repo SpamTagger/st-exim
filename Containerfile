@@ -58,9 +58,6 @@ RUN sed -i 's/__INSTVER__/'${EXIM_VERSION}+${DISTRO}'/' /st-exim/DEBIAN/control 
 
 WORKDIR /
 
-RUN dpkg-deb -b -Z gzip /st-exim /tmp/st-exim.deb && \
-  lintian /tmp/st-exim.deb || true
+RUN dpkg-deb -b -Z gzip /st-exim /tmp/st-exim.deb
 
-RUN ls -al /tmp
-
-ENTRYPOINT ["/bin/sh", "-e", "-c", "cp /tmp/st-exim.deb /out/"]
+CMD lintian /tmp/st-exim.deb
