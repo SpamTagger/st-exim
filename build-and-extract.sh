@@ -18,6 +18,7 @@ echo "Building Exim $EXIM_VERSION for ${DISTRO}/${ARCH}"
 mkdir -p "${EXPORT_DIR}"
 
 podman build \
+  --arch "${ARCH}" \
   --build-arg EXIM_VERSION=$EXIM_VERSION \
   --build-arg DISTRO=$DISTRO \
   --build-arg ARCH=$ARCH \
