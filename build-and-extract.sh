@@ -11,7 +11,7 @@ IMAGE="st-exim:${EXIM_VERSION}-${DISTRO}-${ARCH}"
 CPUS="$(nproc)"
 SELINUX=""
 if [[ -e /sys/fs/selinux ]]; then
-  SELINUX=":Z"
+  SELINUX=":z"
 fi
 
 echo "Building Exim $EXIM_VERSION for ${DISTRO}/${ARCH}"
@@ -37,4 +37,9 @@ else
 fi
 
 mv ${EXPORT_DIR}/st-exim.deb ${EXPORT_DIR}/${FINAL_DEB}
+pushd "${EXPORT_DIR}" >/dev/null
+sha256sum "${FINAL_DEB}" > "${FINAL_DEB}.sha256"
+echo "SHA256 checksum written to ${EXPORT_DIR}/${FINAL_DEB}.sha256"
+popd >/dev/null
+
 echo "Package available at ${EXPORT_DIR}/${FINAL_DEB}"
