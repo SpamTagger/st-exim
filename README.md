@@ -1,6 +1,6 @@
-# st-exim
+# <img src="https://raw.githubusercontent.com/SpamTagger/st-exim/refs/heads/main/st-exim.svg" alt="st-exim logo" style="height:2em; vertical-align:middle;"> st-exim
 
-Compile SpamTagger's build of Exim with Docker
+Custom build of Exim4 for SpamTagger using Podman and GitHub Actions
 
 # Usage
 
@@ -13,52 +13,22 @@ To build the package, you can use the one-step compose file or build and extract
 Run the `build_and_extract.sh` script with the target version as an option:
 
 ```
-./build_and_extract.sh 4.98.2
+./build_and_extract.sh 4.99
 ```
 
-you can optionally provide a destination directory as the second argument to have the `.deb` exported to a specific directory. By default, `${HOME}/debs/` will be used.
-
-If successful, the path to the new `.deb` will be printed.
-
-## Run manually
-
-Below, the following option will be used:
-
-* `${EXIM_VERSION}` - The target tag version to be checked out from Git, which will also be used as the output file name. (default: `4.98.2`)
-
-Build compilation container:
+you can optionally provide the distribution codename as the second argument and the architecture (amd64, arm64) as the third, and an alternate export destination directory as the forth. By default, it will use:
 
 ```
-docker build --build-arg EXIM_VERSION=${EXIM_VERSION} -t build/st-exim . 
+./build-and-export.sh 4.99 trixie amd64 ./dist
 ```
 
-Run the container to get build results:
+and the output file will be located at `./dist/st-exim_4.99+trixie_amd64.deb`.
 
-```
-docker run -d build/st-exim
-```
+# GitHub Actions
 
-the last line of the output will provide a hash ID which should be used as the CONTAINER_ID below.
+A workflow exists to automatically build and upload the .deb packages to GitHub Releases any time that a new version tag (starting with `v`) is pushed. The version number after the `v` will be used as the Exim version to build (ie. The tag `v4.99` will build version `4.99`). TODO: there is not currently an option to create a patched version of the same release (ie. `4.99-1`).
 
-Copy the `.deb` out of the container:
-
-```
-docker cp CONTAINER_ID:/st-exim-${EXIM_VERSION}_amd64.deb /path/to/copy/to/
-```
-
-Clean up the container:
-
-```
-docker rm CONTAINER_ID
-```
-
-Clean up the image:
-
-```
-docker image rm IMAGE_ID
-```
-
-# Notes for future releases
+# Developer notes for future releases
 
 SpamTagger specific build options are defined in `DEBIAN/EDITME`. These need to be updated appropriately based on Exim changelogs (for new features, deprecations and renaming of options).
 
