@@ -9,6 +9,10 @@ EXPORT_DIR="${4:-$(pwd)/dist}"
 FINAL_DEB="st-exim_${EXIM_VERSION}+${DISTRO}_${ARCH}.deb"
 IMAGE="st-exim:${EXIM_VERSION}-${DISTRO}-${ARCH}"
 CPUS="$(nproc)"
+SELINUX=""
+if [[ -e /sys/fs/selinux ]]; then
+  SELINUX=":Z"
+fi
 
 echo "Building Exim $EXIM_VERSION for ${DISTRO}/${ARCH}"
 mkdir -p "${EXPORT_DIR}"
@@ -22,7 +26,7 @@ podman build \
 
 podman run --rm \
   --arch "${ARCH}" \
-  -v "${EXPORT_DIR}:/out:Z" \
+  -v "${EXPORT_DIR}:/out${SELINUX}" \
   "localhost/${IMAGE}"
 
 if [[ -f "${EXPORT_DIR}/st-exim.deb" ]]; then
