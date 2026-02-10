@@ -36,11 +36,17 @@ jobs:
             "${{ matrix.arch }}" \
             dist
 
-      - name: Upload artifact
+      - name: Upload DEB
         uses: actions/upload-artifact@v4
         with:
           name: debs-${{ matrix.distro }}-${{ matrix.arch }}
           path: dist/*.deb
+
+      - name: Upload SHA256SUM
+        uses: actions/upload-artifact@v4
+        with:
+          name: debs-${{ matrix.distro }}-${{ matrix.arch }}-sha256
+          path: dist/*.deb.sha256
 
   release:
     needs: build
@@ -55,4 +61,4 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/**/*.deb
+          files: artifacts/**/*.deb*
