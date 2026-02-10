@@ -44,9 +44,8 @@ fi
 mv ${BUILD_DIR}/tmp/st-exim.deb ${EXPORT_DIR}/${FINAL_DEB}
 rm -rf ${BUILD_DIR}
 
-pushd "${EXPORT_DIR}" >/dev/null
+cd "${EXPORT_DIR}"
 sha256sum "${FINAL_DEB}" > "${FINAL_DEB}.sha256"
 echo "SHA256 checksum written to ${EXPORT_DIR}/${FINAL_DEB}.sha256"
-popd >/dev/null
 
 echo "Package available at ${EXPORT_DIR}/${FINAL_DEB}"
