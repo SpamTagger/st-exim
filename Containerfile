@@ -61,4 +61,6 @@ WORKDIR /
 RUN dpkg-deb -b -Z gzip /st-exim /tmp/st-exim.deb && \
   lintian /tmp/st-exim.deb || true
 
+RUN ls -al /tmp
+
 CMD cp /tmp/st-exim.deb /out/
