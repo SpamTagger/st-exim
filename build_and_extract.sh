@@ -6,7 +6,7 @@ EXIM_VERSION="${1:-4.99}"
 DISTRO="${2:-trixie}"
 ARCH="${3:-amd64}"
 EXPORT_DIR="${4:-$(pwd)/dist}"
-FINAL_DEB="st-exim-${EXIM_VERSION}_${ARCH}.deb"
+FINAL_DEB="st-exim_${EXIM_VERSION}+${DISTRO}_${ARCH}.deb"
 IMAGE="st-exim:${EXIM_VERSION}-${DISTRO}-${ARCH}"
 CPUS="$(nproc)"
 
