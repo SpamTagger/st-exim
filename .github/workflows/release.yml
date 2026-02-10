@@ -62,3 +62,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/**/*.deb*
+          token: ${{ secrets.RELEASE_TOKEN }}
+          overwrite_files: true
