@@ -64,7 +64,7 @@ jobs:
       - name: Create Combined SHA256SUMS
         run: |
           cd artifacts
-          find . -name "*.deb" -exec sha256sum {} \; > SHA256SUMS
+          find . -name "*.deb" -exec sha256 {} \; > SHA256SUMS
 
       - name: Sign SHA256SUMS
         working-directory: artifacts
