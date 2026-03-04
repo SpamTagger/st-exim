@@ -92,4 +92,4 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.DEBS_REPO_TRIGGER }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/SpamTagger/debs/actions/workflows/publish.yml/dispatches \
-            -d '{"ref":"main"}'
+        -d '{"ref":"main","inputs":{"trigger-repo":"st-exim","version":"${{ steps.version.outputs.exim }}"}}'
