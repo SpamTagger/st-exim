@@ -79,7 +79,7 @@ jobs:
         with:
           files: |
             artifacts/**/*.deb
-            artifacts/**/*.deb.sha256sum
+            artifacts/**/*.deb.sha256
             artifacts/SHA256SUMS
             artifacts/SHA256SUMS.asc
           token: ${{ secrets.RELEASE_TOKEN }}
