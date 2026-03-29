@@ -6,7 +6,7 @@ ARG ARCH
 ARG CPUS
 
 COPY ./DEBIAN /DEBIAN
-RUN mkdir -p /st-exim/opt/exim4
+RUN mkdir -p /st-exim
 
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
@@ -49,8 +49,10 @@ RUN cp /DEBIAN/EDITME Local/Makefile
 RUN EXIM_RELEASE_VERSION=${EXIM_VERSION} make -j${CPUS}
 RUN make install
 
-RUN mkdir -p /st-exim/opt/exim4
-RUN cp -a /opt/exim4/* /st-exim/opt/exim4/
+RUN mkdir -p /st-exim/usr/bin /st-exim/usr/lib /st-exim/usr/share/man/man8
+RUN cp -a /usr/bin/exi* /st-exim/usr/bin/
+RUN cp -a /usr/lib/exi* /st-exim/usr/lib/
+RUN cp -a /usr/share/man/man8/exi* /st-exim/usr/share/man/man8/
 RUN cp -r /DEBIAN /st-exim/
 
 RUN sed -i 's/__INSTVER__/'${EXIM_VERSION}+${DISTRO}'/' /st-exim/DEBIAN/control && \
