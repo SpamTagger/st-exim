@@ -1,7 +1,7 @@
 Package: st-exim
 Version: __INSTVER__
 Maintainer: John Mertz <git@john.me.tz>
-Architecture: amd64
+Architecture: __ARCH__
 Priority: standard
 Essential: yes
 Installed-Size: __INSTSIZE__
