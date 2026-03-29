@@ -54,7 +54,8 @@ RUN cp -a /opt/exim4/* /st-exim/opt/exim4/
 RUN cp -r /DEBIAN /st-exim/
 
 RUN sed -i 's/__INSTVER__/'${EXIM_VERSION}+${DISTRO}'/' /st-exim/DEBIAN/control && \
-  sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control
+  sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control && \
+  sed -i 's/__ARCH__/'${ARCH}'/' /st-exim/DEBIAN/control
 
 WORKDIR /
 
