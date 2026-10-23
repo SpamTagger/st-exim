@@ -25,7 +25,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
     libldap-dev \
     libmail-srs-perl \
     libmariadb-dev \
-    libopendmarc-dev \
     libpam0g-dev \
     libpcre2-dev \
     libperl-dev \
