@@ -13,16 +13,16 @@ The official release of the `st-exim` package is built using GitHub Actions any 
 To build the package on your own, you can execute the build script which will build the package using `podman`:
 
 ```
-./build_and_extract.sh 4.99.1
+./build_and_extract.sh 4.100.1
 ```
 
-`4.99.1` represents the Exim version you would like to build, as provided by the `v4.99.1` tag from the [official repository](https://code.exim.org/exim/exim). You can optionally provide the distribution codename as the second argument and the architecture (amd64, arm64) as the third, and an alternate export destination directory as the forth. By default, it will use:
+`4.100.1` represents the Exim version you would like to build, as provided by the `v4.100.1` tag from the [official repository](https://code.exim.org/exim/exim). You can optionally provide the distribution codename as the second argument and the architecture (amd64, arm64) as the third, and an alternate export destination directory as the forth. By default, it will use:
 
 ```
-./build-and-export.sh 4.99.1 trixie amd64 ./dist
+./build-and-export.sh 4.100.1 trixie amd64 ./dist
 ```
 
-and the output file will be located at `./dist/st-exim_4.99.1+trixie_amd64.deb`.
+and the output file will be located at `./dist/st-exim_4.100.1+trixie_amd64.deb`.
 
 ### Manual build
 
@@ -34,5 +34,5 @@ The build options which make the SpamTagger release different from upstream are 
 
 It is best practice to increment the default version number within `Dockerfile` and this document with each release, however, this is not strictly necessary so long as we correctly tag the new version.
 
-TODO: There is not currently a supported option to create a patched version of the same release (ie. `4.99.1-1`). An accomadation for this would need to be made within the `build-and-extract.sh` script to appropriately strip the `-1` suffix when pulling the Exim tag, but leave it on when building the package. Since we generally rely on upstream to fix bugs, it is much more likely that we would just release `4.99.2` if/when it becomes available rather than to create a patched version ourselves. Also, since we distribute updates via SpamTagger-Bootc, and the `debs` repo will correctly serve the latest release files when new VM images are being built, this is of little relevance. The consequence is that users will still install a patched version, but it will simply have the same named version as the un-patched version.
+TODO: There is not currently a supported option to create a patched version of the same release (ie. `4.100.1-1`). An accomadation for this would need to be made within the `build-and-extract.sh` script to appropriately strip the `-1` suffix when pulling the Exim tag, but leave it on when building the package. Since we generally rely on upstream to fix bugs, it is much more likely that we would just release `4.100.2` if/when it becomes available rather than to create a patched version ourselves. Also, since we distribute updates via SpamTagger-Bootc, and the `debs` repo will correctly serve the latest release files when new VM images are being built, this is of little relevance. The consequence is that users will still install a patched version, but it will simply have the same named version as the un-patched version.
 

@@ -2,7 +2,7 @@
 # vim: set ts=2 sw=2 expandtab :
 set -euo pipefail
 
-EXIM_VERSION="${1:-4.99.1}"
+EXIM_VERSION="${1:-4.100.1}"
 DISTRO="${2:-trixie}"
 ARCH="${3:-amd64}"
 BUILD_DIR="${4:-$(pwd)/build}"
