@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: [ trixie ]
-        #distro: [trixie, forky]
+        distro: [trixie, forky]
         arch: [amd64, arm64]
 
     steps:
