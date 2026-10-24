@@ -2,7 +2,6 @@ BIN_DIRECTORY=/usr/bin
 CONFIGURE_FILE=/var/spamtagger/tmp/etc/exim/exim.conf
 EXIM_USER=Debian-exim
 EXIM_GROUP=Debian-exim
-#USE_OPENSSL=yes
 USE_GNUTLS=yes
 TLS_LIBS=-lgnutls -ltasn1 -lgcrypt -lgnutls-dane
 SPOOL_DIRECTORY=/var/spamtagger/spool/exim

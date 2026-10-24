@@ -19,7 +19,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install \
     libnsl-dev \
     libgdbm-dev \
     libgnutls-dane0 \
-    libgnutls-openssl27 \
     libgnutls28-dev \
     libgsasl-dev \
     libldap-dev \
