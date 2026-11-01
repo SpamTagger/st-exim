@@ -1,4 +1,5 @@
 ARG DISTRO=trixie
+ARG TARGET=trixie-updates
 FROM debian:${DISTRO}
 
 ARG EXIM_VERSION
@@ -54,6 +55,7 @@ RUN cp -a /usr/share/man/man8/exi* /st-exim/usr/share/man/man8/
 RUN cp -r /DEBIAN /st-exim/
 
 RUN sed -i 's/__INSTVER__/'${EXIM_VERSION}+${DISTRO}'/' /st-exim/DEBIAN/control && \
+  sed -i 's/__SUITE__/${TARGET}/' /st-exim/DEBIAN/control && \
   sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control && \
   sed -i 's/__ARCH__/'${ARCH}'/' /st-exim/DEBIAN/control
 

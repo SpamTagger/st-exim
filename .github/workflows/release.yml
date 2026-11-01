@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro: [trixie, forky]
         arch: [amd64, arm64]
 
     steps:
@@ -25,26 +24,27 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          echo "exim=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+          echo "exim=$(echo ${GITHUB_REF_NAME#v} | cut -d '+' -f 1)" >> $GITHUB_OUTPUT
+          echo "suite=$(echo ${GITHUB_REF_NAME#v} | cut -d '+' -f 2)" >> $GITHUB_OUTPUT
 
       - name: Build package
         run: |
           ./build-and-extract.sh \
             "${{ steps.version.outputs.exim }}" \
-            "${{ matrix.distro }}" \
+            "${{ steps.version.outputs.suite }}" \
             "${{ matrix.arch }}" \
             dist
 
       - name: Upload DEB
         uses: actions/upload-artifact@v7
         with:
-          name: debs-${{ matrix.distro }}-${{ matrix.arch }}
+          name: debs-${{ matrix.suite }}-${{ matrix.arch }}
           path: dist/*.deb
 
       - name: Upload SHA256SUM
         uses: actions/upload-artifact@v7
         with:
-          name: debs-${{ matrix.distro }}-${{ matrix.arch }}-sha256
+          name: debs-${{ matrix.suite }}-${{ matrix.arch }}-sha256
           path: dist/*.deb.sha256
 
   release:

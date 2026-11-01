@@ -1,5 +1,6 @@
 Package: st-exim
 Version: __INSTVER__
+Suite: __SUITE__
 Section: mail
 Maintainer: SpamTagger Team <support@spamtagger.org>
 Architecture: __ARCH__

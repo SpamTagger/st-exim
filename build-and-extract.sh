@@ -3,29 +3,33 @@
 set -euo pipefail
 
 EXIM_VERSION="${1:-4.100.1}"
-DISTRO="${2:-trixie}"
+TARGET="${2:-trixie-updates}"
 ARCH="${3:-amd64}"
 BUILD_DIR="${4:-$(pwd)/build}"
 EXPORT_DIR="${4:-$(pwd)/dist}"
-FINAL_DEB="st-exim_${EXIM_VERSION}+${DISTRO}_${ARCH}.deb"
-IMAGE="st-exim:${EXIM_VERSION}-${DISTRO}-${ARCH}"
+FINAL_DEB="st-exim_${EXIM_VERSION}+${TARGET}_${ARCH}.deb"
+IMAGE="st-exim:${EXIM_VERSION}-${TARGET}-${ARCH}"
 CPUS="$(nproc)"
 SELINUX=""
 if [[ -e /sys/fs/selinux ]]; then
   SELINUX=":z"
 fi
 
-echo "Building Exim $EXIM_VERSION for ${DISTRO}/${ARCH}"
+echo "Building Exim $EXIM_VERSION for ${TARGET}/${ARCH}"
 mkdir -p "${BUILD_DIR}"
 
 if [[ ! -d "${EXPORT_DIR}" ]]; then
   mkdir -p "${EXPORT_DIR}"
 fi
 
+DISTRO=$TARGET
+DISTRO=${DISTRO%-updates}
+
 podman build \
   --arch "${ARCH}" \
   --build-arg EXIM_VERSION=$EXIM_VERSION \
   --build-arg DISTRO=$DISTRO \
+  --build-arg TARGET=$TARGET \
   --build-arg ARCH=$ARCH \
   --build-arg CPUS=$CPUS \
   --output type=local,dest="${BUILD_DIR}" \
