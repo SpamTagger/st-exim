@@ -19,10 +19,10 @@ To build the package on your own, you can execute the build script which will bu
 `4.100.1` represents the Exim version you would like to build, as provided by the `v4.100.1` tag from the [official repository](https://code.exim.org/exim/exim). You can optionally provide the distribution codename as the second argument and the architecture (amd64, arm64) as the third, and an alternate export destination directory as the forth. By default, it will use:
 
 ```
-./build-and-export.sh 4.100.1 trixie amd64 ./dist
+./build-and-export.sh 4.100.1 trixie-updates amd64 ./dist
 ```
 
-and the output file will be located at `./dist/st-exim_4.100.1+trixie_amd64.deb`.
+and the output file will be located at `./dist/st-exim_4.100.1+trixie-updates_amd64.deb`.
 
 ### Manual build
 
@@ -34,5 +34,12 @@ The build options which make the SpamTagger release different from upstream are 
 
 It is best practice to increment the default version number within `Dockerfile` and this document with each release, however, this is not strictly necessary so long as we correctly tag the new version.
 
-TODO: There is not currently a supported option to create a patched version of the same release (ie. `4.100.1-1`). An accomadation for this would need to be made within the `build-and-extract.sh` script to appropriately strip the `-1` suffix when pulling the Exim tag, but leave it on when building the package. Since we generally rely on upstream to fix bugs, it is much more likely that we would just release `4.100.2` if/when it becomes available rather than to create a patched version ourselves. Also, since we distribute updates via SpamTagger-Bootc, and the `debs` repo will correctly serve the latest release files when new VM images are being built, this is of little relevance. The consequence is that users will still install a patched version, but it will simply have the same named version as the un-patched version.
+## GitHub Actions
 
+The package is built automatically and uploaded as a release upon tagging a release. We support 3 release versions which should each be built from their own branch:
+
+* `current` branch - builds for the `trixie-updates` suite and is built into the `current` SpamTagger-Bootc image. These should be rolling releases which are tested and published as quickly as possible after an upstream release.
+* `testing` branch - builds for the `forky` suite and is built into the `testing` SpamTagger-Bootc image. These should be rolling releases which are tested and published as soon as is reasonable after the `currunt` release to help ease the transition upon `forky` becoming stable.
+* `stable` branch - builds for the `trixie` suite and is built into the `stable` SpamTagger-Bootc image. These should be frozen upon each Debian release becoming stable and only receive security updates throughout the life of that release.
+
+The [`debs`](/SpamTagger/debs) repository gets triggered to rebuild the APT repository every time that a new package is built. It is also responsible for adding the Debian package version (ie. the `-1` in `4.100.1-1`). It will compare all of the most recently discovered packages to any which exist in previous snapshots which have the same version number and will increment the package version until if finds a version with the same modification date, or to the next available version if the package is entirely new. This is a hack around only being able to have one release for each Git Tag. It allows us to delete the release and tag, then push a new tag for the same version to rebuild and get a new package version. The old package version remains in the APT repo but will no longer be available in Releases.
