@@ -3,6 +3,7 @@ ARG TARGET=trixie-updates
 FROM debian:${DISTRO}
 
 ARG EXIM_VERSION
+ARG PACKAGE_VERSION
 ARG ARCH
 ARG CPUS
 
@@ -54,10 +55,10 @@ RUN cp -a /usr/lib/exi* /st-exim/usr/lib/
 RUN cp -a /usr/share/man/man8/exi* /st-exim/usr/share/man/man8/
 RUN cp -r /DEBIAN /st-exim/
 
-RUN sed -i 's/__INSTVER__/'${EXIM_VERSION}+${DISTRO}'/' /st-exim/DEBIAN/control && \
-  sed -i 's/__SUITE__/${TARGET}/' /st-exim/DEBIAN/control && \
-  sed -i 's/__INSTSIZE__/'$(du -sk /st-exim | cut -f1)'/' /st-exim/DEBIAN/control && \
-  sed -i 's/__ARCH__/'${ARCH}'/' /st-exim/DEBIAN/control
+RUN sed -i "s|__INSTVER__|${PACKAGE_VERSION}|" /st-exim/DEBIAN/control && \
+  sed -i "s/__SUITE__/${TARGET}/" /st-exim/DEBIAN/control && \
+  sed -i "s/__INSTSIZE__/$(du -sk /st-exim | cut -f1)/" /st-exim/DEBIAN/control && \
+  sed -i "s/__ARCH__/${ARCH}/" /st-exim/DEBIAN/control
 
 WORKDIR /
 

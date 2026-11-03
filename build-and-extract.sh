@@ -7,6 +7,7 @@ TARGET="${2:-trixie-updates}"
 ARCH="${3:-amd64}"
 BUILD_DIR="${4:-$(pwd)/build}"
 EXPORT_DIR="${4:-$(pwd)/dist}"
+UPSTREAM_VERSION=${EXIM_VERSION%-*}
 FINAL_DEB="st-exim_${EXIM_VERSION}+${TARGET}_${ARCH}.deb"
 IMAGE="st-exim:${EXIM_VERSION}-${TARGET}-${ARCH}"
 CPUS="$(nproc)"
@@ -27,7 +28,8 @@ DISTRO=${DISTRO%-updates}
 
 podman build \
   --arch "${ARCH}" \
-  --build-arg EXIM_VERSION=$EXIM_VERSION \
+  --build-arg EXIM_VERSION=$UPSTREAM_VERSION \
+  --build-arg PACKAGE_VERSION=$EXIM_VERSION \
   --build-arg DISTRO=$DISTRO \
   --build-arg TARGET=$TARGET \
   --build-arg ARCH=$ARCH \
