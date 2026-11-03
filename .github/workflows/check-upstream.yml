@@ -47,7 +47,8 @@ jobs:
           current=$(git ls-remote --tags --refs --sort='v:refname' \
             https://github.com/SpamTagger/st-exim.git | \
             sed -E 's#.*refs/tags/v##;' | \
-            grep -E '^([0-9]+\.[0-9]+(\.[0-9]+)?)$' | \
+            cut -d '+' -f 1 |\
+            sort |\
             tail -n 1)
 
           echo "current=$current" >> "$GITHUB_OUTPUT"
@@ -118,11 +119,17 @@ jobs:
           ## Tasks
 
           - [ ] Review upstream release notes and changes.
+        For `current` branch:
           - [ ] Update debian/EDITME with any new options.
           - [ ] Update debian/control with any dependency changes.
           - [ ] Build and test packages for all Debian releases and architectures.
           - [ ] Push changes.
-          - [ ] Push a new tag with \`git tag v${UPSTREAM}\` and \`git push origin v${UPSTREAM}\`
+          - [ ] Push a new tag with \`git tag v${UPSTREAM}+trixie-updates\` and \`git push origin v${UPSTREAM}+trixie-updates\`
+        For `testing` branch:.
+          - [ ] Repeat steps from `current` (using `forky` suite) only if necessary and after thorough testing.
+        For `stable` branch:
+          - [ ] Review whether a critical security patch exists in the new release.
+          - [ ] Repeat steps from `current` (using `trixie` suite) only if necessary and after thorough testing.
 
           This Issue was created automatically by the upstream release checker.
           EOF
