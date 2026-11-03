@@ -34,5 +34,10 @@ The build options which make the SpamTagger release different from upstream are 
 
 It is best practice to increment the default version number within `Dockerfile` and this document with each release, however, this is not strictly necessary so long as we correctly tag the new version.
 
-TODO: There is not currently a supported option to create a patched version of the same release (ie. `4.100.1-1`). An accomadation for this would need to be made within the `build-and-extract.sh` script to appropriately strip the `-1` suffix when pulling the Exim tag, but leave it on when building the package. Since we generally rely on upstream to fix bugs, it is much more likely that we would just release `4.100.2` if/when it becomes available rather than to create a patched version ourselves. Also, since we distribute updates via SpamTagger-Bootc, and the `debs` repo will correctly serve the latest release files when new VM images are being built, this is of little relevance. The consequence is that users will still install a patched version, but it will simply have the same named version as the un-patched version.
+## GitHub Actions
 
+The package is built automatically and uploaded as a release upon tagging a release. The package version (ie. the `-1` suffix) will automatically be detected by checking for existing packages in the repository and will be incremented to ensure that the new version is unique and higher than any other matching version.
+
+The [`debs`](/SpamTagger/debs) repository gets triggered to rebuild the APT repository every time that a new package is built. In GitHub actions, any existing package revisions for this version will be discovered and the next available suffix will autoatically be added. This is a hack around only being able to have one release for each Git Tag. It allows us to delete the release and tag, then push a new tag for the same version to rebuild and get a new package version. The old package version remains in the APT repo but will no longer be available in Releases.
+
+Specific version dependencies are defined in the `DEBIAN/control` file for the [`spamtagger`](/SpamTagger/SpamTagger) package to ensure that versions remain compatible. We then build [bootc images](/SpamTagger/SpamTagger-Bootc) which define a specific version of that package in order to produce `current` and `stable` images.

@@ -25,7 +25,44 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          echo "exim=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+          exim=${GITHUB_REF_NAME#v}
+
+          index_url="https://debs.spamtagger.org/dists/${{ matrix.distro }}/main/binary-${{ matrix.arch }}/Packages"
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+
+          status="$(curl -sSL -o "$tmp/Packages" \
+            -w '%{http_code}' "$index_url")"
+
+          revision=1
+          case "$status" in
+            200)
+              PKG=""
+              while read p; do
+                if [[ "$(echo $p | awk '{ print $1 }')" == "Package:" ]]; then
+                  PKG=$(echo $p | awk '{ print $2 }')
+                fi
+                if [[ "$(echo $p | awk '{ print $1 }')" == "Version:" ]] && [[ "$PKG" == "st-exim" ]]; then
+                  V=$(echo $p | awk '{ print $2 }')
+                  grep -q "-" || continue
+                  if [[ ${V#*-} -ge $revision ]]; then
+                    revision=${V#*-}
+                    let revision=$((revision+1))
+                  fi
+                fi
+              done <$tmp/Packages
+              echo "Building revision $revision"
+              ;;
+            404)
+              echo "No published index for ${{ matrix.distro }}/${{ matrix.arch }}; starting at revision 1."
+              ;;
+            *)
+              echo "::error::Failed to retrieve APT index: HTTP ${status}"
+              exit 1
+              ;;
+          esac
+
+          echo "exim=${exim}-${revision}" >> $GITHUB_OUTPUT
 
       - name: Build package
         run: |

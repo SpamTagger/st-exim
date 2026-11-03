@@ -123,6 +123,7 @@ jobs:
           - [ ] Build and test packages for all Debian releases and architectures.
           - [ ] Push changes.
           - [ ] Push a new tag with \`git tag v${UPSTREAM}\` and \`git push origin v${UPSTREAM}\`
+          - [ ] Update [spamtagger](/SpamTagger/SpamTagger) \`DEBIAN/control\` file to use this version
 
           This Issue was created automatically by the upstream release checker.
           EOF

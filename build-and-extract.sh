@@ -3,10 +3,11 @@
 set -euo pipefail
 
 EXIM_VERSION="${1:-4.100.1}"
-DISTRO="${2:-trixie}"
+DISTRO="${2:-trixie-updates}"
 ARCH="${3:-amd64}"
 BUILD_DIR="${4:-$(pwd)/build}"
 EXPORT_DIR="${4:-$(pwd)/dist}"
+UPSTREAM_VERSION=${EXIM_VERSION%-*}
 FINAL_DEB="st-exim_${EXIM_VERSION}+${DISTRO}_${ARCH}.deb"
 IMAGE="st-exim:${EXIM_VERSION}-${DISTRO}-${ARCH}"
 CPUS="$(nproc)"
@@ -24,7 +25,8 @@ fi
 
 podman build \
   --arch "${ARCH}" \
-  --build-arg EXIM_VERSION=$EXIM_VERSION \
+  --build-arg EXIM_VERSION=$UPSTREAM_VERSION \
+  --build-arg PACKAGE_VERSION=$EXIM_VERSION \
   --build-arg DISTRO=$DISTRO \
   --build-arg ARCH=$ARCH \
   --build-arg CPUS=$CPUS \
