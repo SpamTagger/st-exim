@@ -125,7 +125,7 @@ jobs:
           - [ ] Push changes.
           - [ ] Push a new tag with \`git tag v${UPSTREAM}+trixie-updates\` and \`git push origin v${UPSTREAM}+trixie-updates\`
           For `testing` branch:.
-          - [ ] Repeat steps from `current` (using `forky` suite) only if necessary and after thorough testing.
+          - [ ] Repeat steps from `current` (using `forky` suite) whenever convenient.
           For `stable` branch:
           - [ ] Review whether a critical security patch exists in the new release.
           - [ ] Repeat steps from `current` (using `trixie` suite) only if necessary and after thorough testing.
