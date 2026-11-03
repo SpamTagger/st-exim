@@ -1,4 +1,3 @@
-
 name: Check upstream Exim release
 
 on:
@@ -119,15 +118,15 @@ jobs:
           ## Tasks
 
           - [ ] Review upstream release notes and changes.
-        For `current` branch:
+          For `current` branch:
           - [ ] Update debian/EDITME with any new options.
           - [ ] Update debian/control with any dependency changes.
           - [ ] Build and test packages for all Debian releases and architectures.
           - [ ] Push changes.
           - [ ] Push a new tag with \`git tag v${UPSTREAM}+trixie-updates\` and \`git push origin v${UPSTREAM}+trixie-updates\`
-        For `testing` branch:.
+          For `testing` branch:.
           - [ ] Repeat steps from `current` (using `forky` suite) only if necessary and after thorough testing.
-        For `stable` branch:
+          For `stable` branch:
           - [ ] Review whether a critical security patch exists in the new release.
           - [ ] Repeat steps from `current` (using `trixie` suite) only if necessary and after thorough testing.
 
